@@ -82,7 +82,7 @@ function menu_todos {
         menu_todos
         ;;
     "Open All TODOS HTML")
-        cat $(find $WF/TODOS | grep '.md') | pandoc --toc --self-contained -o "$WF/todos.html"
+        cat $(find $WF/TODOS | grep '.md') | pandoc --toc --self-contained --from=gfm --css=pandoc.css -o "$WF/todos.html"
         $TERM "lynx $WF/todos.html" && 
         menu_notes
         ;;
@@ -113,7 +113,7 @@ function menu_todos {
             fi
             ;;
         "Open HTML")
-            $TERM "pandoc --toc --self-contained -i "$WF/TODOS/$SEL" --to=html | lynx -stdin"  && 
+            $TERM "pandoc --toc --self-contained -i "$WF/TODOS/$SEL" --from=gfm --to=html --css=pandoc.css | lynx -stdin"  && 
             menu_todos
             ;;
         "Edit file")
@@ -157,7 +157,7 @@ function menu_notes {
         menu_notes
         ;;
     "Open All Notes HTML")
-        cat $(find $WF/NOTES | grep '.md') | pandoc --toc --self-contained -o "$WF/notes.html"
+        cat $(find $WF/NOTES | grep '.md') | pandoc --toc --self-contained --from=gfm --css=pandoc.css -o "$WF/notes.html"
         $TERM "lynx $WF/notes.html" && 
         menu_notes
         ;;
@@ -183,7 +183,7 @@ function menu_notes {
             fi
             ;;
         "Open HTML")
-            $TERM "pandoc --toc --self-contained -i "$WF/NOTES/$SEL" --to=html | lynx -stdin" && 
+            $TERM "pandoc --toc --self-contained -i "$WF/NOTES/$SEL" --from=gfm --to=html --css=pandoc.css | lynx -stdin" && 
             menu_notes
             ;;
         "Edit file")
