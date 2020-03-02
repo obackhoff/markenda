@@ -10,7 +10,7 @@ AGENDA="$WF/agenda.gcal"
 # EDITOR="code --folder-uri=$WF "
 EDITOR="typora "
 EDITOR_TERM="nvim"
-TERM="gnome-terminal -- bash -c"
+TERM="gnome-terminal --wait -- bash -c"
 
 function show_upcoming {
     echo "Upcoming (up to 30 days): "

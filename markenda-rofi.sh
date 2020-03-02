@@ -83,7 +83,7 @@ function menu_todos {
         ;;
     "Open All TODOS HTML")
         cat $(find $WF/TODOS | grep '.md') | pandoc --toc --self-contained -o "$WF/todos.html"
-        gnome-terminal --wait -- bash -c "lynx $WF/todos.html" && 
+        $TERM "lynx $WF/todos.html" && 
         menu_notes
         ;;
     *)  
@@ -113,7 +113,7 @@ function menu_todos {
             fi
             ;;
         "Open HTML")
-            gnome-terminal --wait -- bash -c "pandoc --toc --self-contained -i "$WF/TODOS/$SEL" --to=html | lynx -stdin"  && 
+            $TERM "pandoc --toc --self-contained -i "$WF/TODOS/$SEL" --to=html | lynx -stdin"  && 
             menu_todos
             ;;
         "Edit file")
@@ -158,7 +158,7 @@ function menu_notes {
         ;;
     "Open All Notes HTML")
         cat $(find $WF/NOTES | grep '.md') | pandoc --toc --self-contained -o "$WF/notes.html"
-        gnome-terminal --wait -- bash -c "lynx $WF/notes.html" && 
+        $TERM "lynx $WF/notes.html" && 
         menu_notes
         ;;
     *)  
@@ -183,7 +183,7 @@ function menu_notes {
             fi
             ;;
         "Open HTML")
-            gnome-terminal --wait -- bash -c "pandoc --toc --self-contained -i "$WF/NOTES/$SEL" --to=html | lynx -stdin" && 
+            $TERM "pandoc --toc --self-contained -i "$WF/NOTES/$SEL" --to=html | lynx -stdin" && 
             menu_notes
             ;;
         "Edit file")
