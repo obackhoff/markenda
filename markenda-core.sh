@@ -117,8 +117,6 @@ function toggle_todo_item {
         # Too many escaped characters!!
         NEWLINE="$(echo "$LINE" | sed 's/^\s*.*\[ \]/\\\[x\\\]/g')"
         LINE="$(echo "$LINE" | sed 's/^\s*.*\[ \]/\\\[ \\\]/g')"
-        echo "$NEWLINE" >> l.log 
-        echo "$LINE" >> l.log
         sed -i "$FILE" -e "s/$LINE$/$NEWLINE/" >> l.log
     else
         NEWLINE="$(echo "$LINE" | sed 's/^\s*.*\[x\]/\\\[ \\\]/g')"
