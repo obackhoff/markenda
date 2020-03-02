@@ -11,7 +11,7 @@ AGENDA="$WF/agenda.gcal"
 EDITOR="typora "
 EDITOR_TERM="nvim"
 TERM="gnome-terminal --wait -- bash -c"
-# TERM="xfce4-terminal -e"
+# TERM="xfce4-terminal --disable-server -e"
 
 function show_upcoming {
     echo "Upcoming (up to 30 days): "
