@@ -4,7 +4,11 @@ Markenda is a utility for creating Notes and TODO lists using Markdown.
 ## Requirements
 * gcal
 * rofi
+* pandoc
 * lynx
+* optional
+  * typhora
+  * vscode
   
 ## Configuration
 * the Working Folder can be set manually
