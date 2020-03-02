@@ -1,0 +1,159 @@
+#!/bin/bash
+
+if [ ! -z "$1" ]
+then
+    WF="$1"
+else
+    WF="/home/omar/Workspace/markenda"
+fi
+AGENDA="$WF/agenda.gcal"
+# EDITOR="code --folder-uri=$WF "
+EDITOR="typora "
+EDITOR_TERM="nvim"
+TERM="gnome-terminal -- bash -c"
+
+function show_upcoming {
+    echo "Upcoming (up to 30 days): "
+    gcal -cxdl@t30 -f $AGENDA
+}
+
+function current_week {
+    echo "Current week: "
+    gcal -cxW -f $AGENDA
+}
+
+function current_month {
+    echo "Current month: "
+    gcal -cxM -f $AGENDA
+}
+
+function current_year {
+    echo "Current year: "
+    gcal -cxY -f $AGENDA
+}
+
+function rest_week {
+    echo "Rest of the week: "
+    gcal -cxW+ -f $AGENDA
+}
+
+function rest_month {
+    echo "Rest of the month: "
+    gcal -cxM+ -f $AGENDA
+}
+
+function rest_year {
+    echo "Rest of the year: "
+    gcal -cxY+ -f $AGENDA
+}
+
+function new_note {
+    NAME="$1"
+    Y="$(date +%Y)"
+    M="$(date +%m)"
+    D="$(date +%d)"
+    TIME="$(date +%H:%M)"
+    mkdir -p "$WF/NOTES/$Y$M$D"
+    touch "$WF/NOTES/$Y$M$D/$NAME".md
+    echo "<!-- NOTE -->" >> "$WF/NOTES/$Y$M$D/$NAME".md
+    echo "NOTE: $NAME" >> "$WF/NOTES/$Y$M$D/$NAME".md
+    echo "[CREATED]: $Y-$M-$D-$TIME" >> "$WF/NOTES/$Y$M$D/$NAME".md
+}
+
+function new_todo_file {
+    NAME="$1"
+    Y="$(date +%Y)"
+    M="$(date +%m)"
+    D="$(date +%d)"
+    TIME="$(date +%H:%M)"
+    mkdir -p "$WF/TODOS/$Y$M$D"
+    touch "$WF/TODOS/$Y$M$D/$NAME".md
+    echo "<!-- TODO -->" >> "$WF/TODOS/$Y$M$D/$NAME".md
+    echo "TODO: $NAME" >> "$WF/TODOS/$Y$M$D/$NAME".md
+    echo "[CREATED]: $Y-$M-$D-$TIME" >> "$WF/TODOS/$Y$M$D/$NAME".md
+}
+
+function schedule_item {
+    FILE="$1"
+    LINE="$2"
+    SCHEDULE="$3"
+    TAG="$4"
+
+    FOUND=false
+    ISSCHEDULED=false
+    # Verify it does not have been scheduled already
+    while IFS= read -r line || [ -n "$line" ]
+    do
+        if [ "$line" == "$LINE" ]  
+        then 
+            FOUND=true
+            break
+        fi            
+    done < "$FILE"
+    # if not schedueled, write schedule
+    empty=$'\\\n'
+    if [ "$FOUND" == false ]
+    then
+        echo -e "\n$LINE" >> "$FILE"
+    fi
+    LINE="$(echo "$LINE" | sed 's/\[/\\\[/g' | sed 's/\]/\\\]/g')"
+    NEWLINE="$LINE$empty\[$TAG\]\: $SCHEDULE"
+    sed -i "$FILE" -e "0,/$LINE/ s/$LINE/$NEWLINE/"
+}
+
+function new_todo_item {
+    FILE="$1"
+    MSG="$2"
+    empty=$'\n'
+    echo "$empty* [ ]" "$MSG" >> $FILE
+}
+
+function toggle_todo_item {
+    FILE="$1"
+    LINE="$2"
+    ISOFF="$(echo "$LINE" | grep "\[ \]")"
+    if [ ! -z "$ISOFF" ]
+    then
+        # Too many escaped characters!!
+        NEWLINE="$(echo "$LINE" | sed 's/^\s*.*\[ \]/\\\[x\\\]/g')"
+        LINE="$(echo "$LINE" | sed 's/^\s*.*\[ \]/\\\[ \\\]/g')"
+        echo "$NEWLINE" >> l.log 
+        echo "$LINE" >> l.log
+        sed -i "$FILE" -e "s/$LINE$/$NEWLINE/" >> l.log
+    else
+        NEWLINE="$(echo "$LINE" | sed 's/^\s*.*\[x\]/\\\[ \\\]/g')"
+        LINE="$(echo "$LINE" | sed 's/^\s*.*\[x\]/\\\[x\\\]/g')"
+        sed -i "$FILE" -e "s/$LINE$/$NEWLINE/"
+    fi
+}
+
+function generate_agendafile {
+    echo "" > $AGENDA
+    mkdir -p "$WF/TODOS"
+    mkdir -p "$WF/NOTES"
+    MDS="$(find $WF | grep '.md')"
+
+    for md in $MDS
+    do
+        prev_line=""
+        NAME="$(echo $md | sed "s|$WF/||")"
+        while IFS= read -r line || [ -n "$line" ]
+        do
+            SCHEDULE="$(echo "$line" | grep "\[.*\]:" | cut -d' ' -f 2 | sed 's/-//g')"
+            DATE="${SCHEDULE:0:8}"
+            TIME="${SCHEDULE:8}"
+            if [ ! -z $TIME ]; 
+            then 
+                TIME=" $TIME"
+            fi
+            TAG="$(echo "$line" | grep "\[.*\]:" | cut -d' ' -f 1 | sed 's/\[\|\]\|://g')"
+            if [ ! -z "$SCHEDULE" ] && [ "$line" != "$prev_line" ]
+            then
+                echo "; $NAME" >> $AGENDA
+                echo "$DATE" "[$TAG$TIME]" "$prev_line" >> $AGENDA
+            fi
+
+            prev_line=$line
+        done < $md
+    done
+}
