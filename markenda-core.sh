@@ -6,8 +6,8 @@ then
 else
     WF="/home/omar/Workspace/markenda"
 fi
-# TERM="gnome-terminal --wait -- bash -c"
-TERM="xfce4-terminal --disable-server -x"
+TERM="gnome-terminal --wait --"
+#TERM="xfce4-terminal --disable-server -x"
 AGENDA="$WF/agenda.gcal"
 # EDITOR="code --folder-uri=$WF "
 EDITOR="typora "

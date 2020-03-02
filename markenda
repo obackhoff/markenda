@@ -2,4 +2,4 @@
 
 MARKENDA="/home/omar/Workspace/markenda"
 WF="/home/omar/Workspace/markenda"
-exec $MARKENDA/markenda-rofi.sh "$WF" 
+$MARKENDA/markenda-rofi.sh "$WF" 

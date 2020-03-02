@@ -82,7 +82,7 @@ function menu_todos {
         menu_todos
         ;;
     "Open All TODOS HTML")
-        cat $(find $WF/TODOS | grep '.md') | pandoc --toc --self-contained --from=gfm --css=pandoc.css -o "$WF/todos.html"
+        cat $(find "$WF/TODOS" | grep '.md') | pandoc --toc --self-contained --from=gfm --to=html --css=pandoc.css -o "$WF/todos.html"
         $BROWSER"$WF/todos.html" && 
         menu_notes
         ;;
