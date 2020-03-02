@@ -1,0 +1,10 @@
+#!/bin/bash
+
+MARKENDA="/home/omar/Workspace/markenda"
+WF="/home/omar/.markenda"
+cd "$WF"
+git pull
+$MARKENDA/markenda-rofi.sh "$WF"
+git add *
+git commit -am 'AUTOMATIC UPDATE - DEBIAN'
+git push
