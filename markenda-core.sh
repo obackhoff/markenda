@@ -15,7 +15,7 @@ TERM="gnome-terminal -- bash -c"
 function show_upcoming {
     echo "Upcoming (up to 30 days): "
     gcal -cxdl@t30 -f $AGENDA
-}
+} 
 
 function current_week {
     echo "Current week: "
