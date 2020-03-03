@@ -84,7 +84,7 @@ function menu_todos {
     "Open All TODOS HTML")
         cat $(find "$WF/TODOS" | grep '.md') | pandoc --toc --self-contained --from=gfm --to=html --css=pandoc.css -o "$WF/todos.html"
         $BROWSER"$WF/todos.html" && 
-        menu_notes
+        menu_todos
         ;;
     *)  
         MENU=$'BACK\nOpen HTML\nAdd TODO item\nAdd Schedule\nEdit file\nDelete file\n-----\n'
