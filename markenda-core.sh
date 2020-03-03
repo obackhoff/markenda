@@ -58,9 +58,11 @@ function new_note {
     TIME="$(date +%H:%M)"
     mkdir -p "$WF/NOTES/$Y$M$D"
     touch "$WF/NOTES/$Y$M$D/$NAME".md
+    echo "***" >> "$WF/NOTES/$Y$M$D/$NAME".md
     echo "<!-- NOTE -->" >> "$WF/NOTES/$Y$M$D/$NAME".md
     echo "NOTE: $NAME" >> "$WF/NOTES/$Y$M$D/$NAME".md
     echo "[CREATED]: $Y-$M-$D-$TIME" >> "$WF/NOTES/$Y$M$D/$NAME".md
+    echo "***" >> "$WF/NOTES/$Y$M$D/$NAME".md
 }
 
 function new_todo_file {
