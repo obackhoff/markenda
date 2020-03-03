@@ -4,21 +4,17 @@ source /home/omar/Workspace/markenda/markenda-core.sh
 
 #TERMINAL="gnome-terminal --wait --"
 TERMINAL="xfce4-terminal --disable-server -x"
-# EDITOR="code --folder-uri=$WF "
-EDITOR="typora "
-#BROWSER="$TERMINAL lynx "
-BROWSER="chromium --app=file://"
-
-
-dmenu_normal="rofi -dmenu -p Markenda -scroll-method 1"
-dmenu_nop="rofi -dmenu -scroll-method 1"
+dmenu_normal="/home/omar/Workspace/markenda/pmenu -p Markenda>"
+dmenu_nop="/home/omar/Workspace/markenda/pmenu"
+EDITOR="$TERMINAL nvim "
+BROWSER="$TERMINAL lynx "
 
 function confirm {
-    echo -e "No\nYes" | $dmenu_nop -p "Are you sure?"
+    echo -e "No\nYes" | $dmenu_nop -p "Are you sure?> "
 }
 
 function select_week_rofi {
-    WEEK="$(gcal --blocks=12 -K | sed '/^\s*$/d' | $dmenu_nop -p 'Select week' | awk '{ if($NF < 54) print $NF}')"
+    WEEK="$(gcal --blocks=12 -K | sed '/^\s*$/d' | $dmenu_nop -p 'Select week> ' | awk '{ if($NF < 54) print $NF}')"
     if [ ! -z "$WEEK" ]
     then 
         echo "Week $WEEK:"
@@ -85,7 +81,7 @@ function menu_todos {
     
         ;;
     "Create TODO")
-        name="$($dmenu_nop -p "TODO name")"
+        name="$($dmenu_nop -p "TODO name> ")"
         new_todo_file "$name"
         menu_todos
         ;;
@@ -103,19 +99,19 @@ function menu_todos {
             menu_todos
             ;;
         "Add TODO item")
-            MSG="$($dmenu_nop -p "Item contents")"
+            MSG="$($dmenu_nop -p "Item contents> ")"
             new_todo_item "$WF/TODOS/$SEL" "$MSG"
             menu_todos "$SEL"
             ;;
         "Add Schedule")
-            MSG="$(echo "$TODO" | $dmenu_nop -p "Select Line")"
+            MSG="$(echo "$TODO" | $dmenu_nop -p "Select Line> ")"
             if [ -z "$MSG" ]
             then
                 menu_todos
                 break
             else
-                TAG="$(echo -e "TODO\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG")"
-                SCHEDULE="$($dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])")"
+                TAG="$(echo -e "TODO\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG> ")"
+                SCHEDULE="$($dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
                 schedule_item "$WF/TODOS/$SEL" "$MSG" "$SCHEDULE" "$TAG"
                 menu_todos "$SEL"
             fi
@@ -161,7 +157,7 @@ function menu_notes {
         
         ;;
     "Create Note")
-        name="$($dmenu_nop -p "Note name")"
+        name="$($dmenu_nop -p "Note name> ")"
         new_note "$name"
         menu_notes
         ;;
@@ -179,14 +175,14 @@ function menu_notes {
             menu_notes
             ;;
         "Add Schedule")
-            MSG="$(echo "$NOTE" | $dmenu_nop -p "Select Line")"
+            MSG="$(echo "$NOTE" | $dmenu_nop -p "Select Line> ")"
             if [ -z "$MSG" ]
             then
                 menu_notes
                 break
             else
-                TAG="$(echo -e "NOTE\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG")"
-                SCHEDULE="$($dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])")"
+                TAG="$(echo -e "NOTE\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG> ")"
+                SCHEDULE="$($dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
                 schedule_item "$WF/NOTES/$SEL" "$MSG" "$SCHEDULE" "$TAG"
                 menu_notes "$SEL"
             fi
