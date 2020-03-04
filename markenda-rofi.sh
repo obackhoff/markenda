@@ -19,8 +19,8 @@ EDITOR="typora "
 BROWSER="chromium --app=file://"
 
 
-dmenu_normal="rofi -dmenu -p Markenda -scroll-method 1"
-dmenu_nop="rofi -dmenu -scroll-method 1"
+dmenu_normal="rofi -i -dmenu -p Markenda -scroll-method 1"
+dmenu_nop="rofi -i -dmenu -scroll-method 1"
 
 function confirm {
     echo -e "No\nYes" | $dmenu_nop -p "Are you sure?"

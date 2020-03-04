@@ -13,8 +13,8 @@ source $DIR/markenda-core.sh "$WF"
 
 # dmenu_normal="$DIR/pmenu -p Markenda>"
 # dmenu_nop="$DIR/pmenu"
-dmenu_normal="vis-menu -l $(tput lines) -p Markenda>"
-dmenu_nop="vis-menu -l $(tput lines)"
+dmenu_normal="vis-menu -i -l $(tput lines) -p Markenda>"
+dmenu_nop="vis-menu -i -l $(tput lines)"
 EDITOR="nvim "
 BROWSER="lynx "
 
