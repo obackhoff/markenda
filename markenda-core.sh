@@ -1,10 +1,12 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 if [ ! -z "$1" ]
 then
     WF="$1"
 else
-    WF="/home/omar/Workspace/markenda"
+    WF="$DIR"
 fi
 AGENDA="$WF/agenda.gcal"
 

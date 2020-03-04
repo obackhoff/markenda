@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source /home/omar/Workspace/markenda/markenda-core.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+source $DIR/markenda-core.sh
 
 #TERMINAL="gnome-terminal --wait --"
 TERMINAL="xfce4-terminal --disable-server -x"

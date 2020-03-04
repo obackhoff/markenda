@@ -1,9 +1,11 @@
 #!/bin/bash
 
-source /home/omar/Workspace/markenda/markenda-core.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# dmenu_normal="/home/omar/Workspace/markenda/pmenu -p Markenda>"
-# dmenu_nop="/home/omar/Workspace/markenda/pmenu"
+source $DIR/markenda-core.sh
+
+# dmenu_normal="$DIR/pmenu -p Markenda>"
+# dmenu_nop="$DIR/pmenu"
 dmenu_normal="vis-menu -l $(tput lines) -p Markenda>"
 dmenu_nop="vis-menu -l $(tput lines)"
 EDITOR="nvim "
