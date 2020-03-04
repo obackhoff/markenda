@@ -127,7 +127,7 @@ function toggle_todo_item {
 }
 
 function generate_agendafile {
-    echo "" > $AGENDA
+    echo "" > "$AGENDA"NEW
     mkdir -p "$WF/TODOS"
     mkdir -p "$WF/NOTES"
     MDS="$(find $WF | grep '.md')"
@@ -148,11 +148,13 @@ function generate_agendafile {
             TAG="$(echo "$line" | grep "\[.*\]:" | cut -d' ' -f 1 | sed 's/\[\|\]\|://g')"
             if [ ! -z "$SCHEDULE" ] && [ "$line" != "$prev_line" ]
             then
-                echo "; $NAME" >> $AGENDA
-                echo "$DATE" "[$TAG$TIME]" "$prev_line" >> $AGENDA
+                echo "; $NAME" >> "$AGENDA"NEW
+                echo "$DATE" "[$TAG$TIME]" "$prev_line" >> "$AGENDA"NEW
             fi
 
             prev_line=$line
         done < $md
     done
+    mv "$AGENDA"NEW "$AGENDA"
+
 }
