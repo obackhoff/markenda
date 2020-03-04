@@ -9,7 +9,7 @@ else
     WF="$DIR"
 fi
 
-source $DIR/markenda-core.sh
+source $DIR/markenda-core.sh "$WF"
 
 # dmenu_normal="$DIR/pmenu -p Markenda>"
 # dmenu_nop="$DIR/pmenu"

@@ -9,7 +9,7 @@ else
     WF="$DIR"
 fi
 
-source $DIR/markenda-core.sh
+source $DIR/markenda-core.sh "$WF"
 
 #TERMINAL="gnome-terminal --wait --"
 TERMINAL="xfce4-terminal --disable-server -x"
