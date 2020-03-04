@@ -25,7 +25,7 @@ function select_week_rofi {
 }
 
 function start {
-    generate_agendafile
+    generate_agendafile &
     MENU=$'View TODOS\nView Notes\nCalendar\nAgenda: Show Upcoming\nAgenda: Current Week\nAgenda: Select Week\nAgenda: Current Month\nAgenda: Current Year\nEXIT'
     SEL="$(echo -e "$MENU" | $dmenu_normal)"
 
