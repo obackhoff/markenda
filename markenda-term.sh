@@ -91,7 +91,7 @@ function menu_todos {
            ;;
         "Edit file")
             $EDITOR "$WF/TODOS/$SEL"
-            OPT="EXIT"
+            OPT="View TODOS"
             ;;
         "Delete file")
             ans="$(confirm)"
@@ -166,7 +166,7 @@ function menu_notes {
             ;;
         "Edit file")
             $EDITOR "$WF/NOTES/$SEL"
-            OPT="EXIT"
+            OPT="View Notes"
             ;;
         "Delete file")
             ans="$(confirm)"
