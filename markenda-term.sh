@@ -38,6 +38,7 @@ function start {
     generate_agendafile &
     MENU=$'View TODOS\nView Notes\nCalendar\nAgenda: Show Upcoming\nAgenda: Current Week\nAgenda: Select Week\nAgenda: Current Month\nAgenda: Current Year\nEXIT'
     OPT="$(echo -e "$MENU" | $dmenu_normal)"    
+    INFILE=false
 }
 
 function menu_todos {
@@ -45,11 +46,10 @@ function menu_todos {
     TODOS="$(find $WF/TODOS | grep '.md')"
     NAMES="$(echo "$TODOS" | sed "s|$WF/TODOS/||")"
     empty=$'\n'
-    if [ -z "$1" ]
+    
+    if [ -z "$1" ] && [ "$INFILE" == false ]
     then
         SEL="$(echo -e "BACK\nCreate TODO\nOpen All TODOS HTML\n-----\n$NAMES" | $dmenu_normal)"
-    else   
-        SEL=$1
     fi
     case "$SEL" in
     "BACK")
@@ -72,6 +72,7 @@ function menu_todos {
         case "$LINE" in
         "BACK")
             OPT="View TODOS"
+            INFILE=false
            ;;
         "Add TODO item")
             MSG="$($dmenu_nop -p "Item contents> ")"
@@ -111,6 +112,7 @@ function menu_todos {
         *)
             toggle_todo_item "$WF/TODOS/$SEL" "$LINE"
             OPT="View TODOS" #"$SEL"
+            INFILE=true
             ;;
         esac
         ;;
@@ -122,11 +124,9 @@ function menu_notes {
     NOTES="$(find $WF/NOTES | grep '.md')"
     NAMES="$(echo "$NOTES" | sed "s|$WF/NOTES/||")"
     empty=$'\n'
-    if [ -z "$1" ]
+    if [ -z "$1" ] && [ "$INFILE" == false ]
     then
         SEL="$(echo -e "BACK\nCreate Note\nOpen All Notes HTML\n-----\n$NAMES" | $dmenu_normal)"
-    else
-        SEL="$1"
     fi
     case "$SEL" in
     "BACK")
@@ -150,6 +150,7 @@ function menu_notes {
         case "$LINE" in
         "BACK")
             OPT="View Notes"
+            INFILE=false
             ;;
         "Add Schedule")
             MSG="$(echo "$NOTE" | $dmenu_nop -p "Select Line> ")"
@@ -187,6 +188,7 @@ function menu_notes {
         *)
             toggle_todo_item "$WF/NOTES/$SEL" "$LINE"
             OPT="View Notes" #"$SEL"
+            INFILE=true
             ;;
         esac
         ;;
