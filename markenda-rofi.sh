@@ -2,6 +2,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+if [ ! -z "$1" ]
+then
+    WF="$1"
+else
+    WF="$DIR"
+fi
+
 source $DIR/markenda-core.sh
 
 #TERMINAL="gnome-terminal --wait --"
