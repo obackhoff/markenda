@@ -168,7 +168,7 @@ function generate_agendafile {
             then
                 echo "; $NAME" >> "$AGENDA"NEW
                 echo "$DATE" "[$TAG$TIME]" "$prev_line" >> "$AGENDA"NEW
-                ical_entry "[${TAG}] ${prev_line}" "File: $NAME" "$DATE" "$TIME" >> $ICAL
+                ical_entry "[${TAG}] ${prev_line}" "File: $WF/$NAME" "$DATE" "$TIME" >> $ICAL
             fi
 
             prev_line=$line
