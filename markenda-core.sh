@@ -136,9 +136,9 @@ function ical_entry {
     loc="Earth"
     if [ -z "$timeS" ]
     then
-        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s)\nEND:VEVENT\n"
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:"$loc"\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s)\nEND:VEVENT\n"
     else
-        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s)\nEND:VEVENT\n"
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:"$loc"\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s)\nEND:VEVENT\n"
     fi
     echo -e "$ENTRY"
 }
@@ -159,12 +159,13 @@ function generate_agendafile {
             SCHEDULE="$(echo "$line" | grep "\[.*\]:" | cut -d' ' -f 2 | sed 's/-//g')"
             DATE="${SCHEDULE:0:8}"
             TIME="${SCHEDULE:8}"
-            if [ ! -z $TIME ]; 
+            echo "$line" >> $HOME/l.log
+            if [ ! -z $TIME ] ; 
             then 
                 TIME=" $TIME"
             fi
             TAG="$(echo "$line" | grep "\[.*\]:" | cut -d' ' -f 1 | sed 's/\[\|\]\|://g')"
-            if [ ! -z "$SCHEDULE" ] && [ "$line" != "$prev_line" ]
+            if [ ! -z "$SCHEDULE" ] && [ "$line" != "$prev_line" ] && [ ! "$NAME" == "todos.md" ] && [ ! "$NAME" == "notes.md" ]
             then
                 echo "; $NAME" >> "$AGENDA"NEW
                 echo "$DATE" "[$TAG$TIME]" "$prev_line" >> "$AGENDA"NEW
