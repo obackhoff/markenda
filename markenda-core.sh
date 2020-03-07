@@ -136,9 +136,9 @@ function ical_entry {
     loc="Earth"
     if [ -z "$timeS" ]
     then
-        ENTRY="\nBEGIN:VEVENT\nLOCATION:"$loc"\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s)\nEND:VEVENT\n"
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:"$loc"\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s-$RANDOM)\nEND:VEVENT\n"
     else
-        ENTRY="\nBEGIN:VEVENT\nLOCATION:"$loc"\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s)\nEND:VEVENT\n"
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:"$loc"\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s-$RANDOM)\nEND:VEVENT\n"
     fi
     echo -e "$ENTRY"
 }
