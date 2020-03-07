@@ -136,11 +136,11 @@ function ical_entry {
     loc="Earth"
     if [ -z "$timeS" ]
     then
-        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:$sum\nDESCRIPTION:$des\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s)\nEND:VEVENT\n"
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s)\nEND:VEVENT\n"
     else
-        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:$sum\nDESCRIPTION:$des\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s)\nEND:VEVENT\n"
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:"$sum"\nDESCRIPTION:"$des"\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s)\nEND:VEVENT\n"
     fi
-    echo -e $ENTRY
+    echo -e "$ENTRY"
 }
 
 function generate_agendafile {
@@ -168,7 +168,7 @@ function generate_agendafile {
             then
                 echo "; $NAME" >> "$AGENDA"NEW
                 echo "$DATE" "[$TAG$TIME]" "$prev_line" >> "$AGENDA"NEW
-                echo -e "$(ical_entry "[$TAG] $NAME" "File: $prev_line" "$DATE" "$TIME")" >> $ICAL
+                ical_entry "[${TAG}] ${prev_line}" "File: $NAME" "$DATE" "$TIME" >> $ICAL
             fi
 
             prev_line=$line
