@@ -8,7 +8,9 @@ then
 else
     WF="$DIR"
 fi
+
 AGENDA="$WF/agenda.gcal"
+ICAL="$WF/cal.ics"
 
 
 function show_upcoming {
@@ -126,8 +128,24 @@ function toggle_todo_item {
     fi
 }
 
+function ical_entry {
+    sum=$1
+    des=$2
+    dateS=$3
+    timeS="$(echo $4 | sed 's/://')"
+    loc="Earth"
+    if [ -z "$timeS" ]
+    then
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:$sum\nDESCRIPTION:$des\nDTSTART;TZID=$(date +%Z):"$dateS"\nUID:$(date +%s)\nEND:VEVENT\n"
+    else
+        ENTRY="\nBEGIN:VEVENT\nLOCATION:\nSUMMARY:$sum\nDESCRIPTION:$des\nDTSTART;TZID=$(date +%Z):"$dateS"T"$timeS"00\nUID:$(date +%s)\nEND:VEVENT\n"
+    fi
+    echo -e $ENTRY
+}
+
 function generate_agendafile {
     echo "" > "$AGENDA"NEW
+    echo "BEGIN:VCALENDAR" > "$ICAL"
     mkdir -p "$WF/TODOS"
     mkdir -p "$WF/NOTES"
     MDS="$(find $WF | grep '.md')"
@@ -150,11 +168,13 @@ function generate_agendafile {
             then
                 echo "; $NAME" >> "$AGENDA"NEW
                 echo "$DATE" "[$TAG$TIME]" "$prev_line" >> "$AGENDA"NEW
+                echo -e "$(ical_entry "[$TAG] $NAME" "File: $prev_line" "$DATE" "$TIME")" >> $ICAL
             fi
 
             prev_line=$line
         done < $md
     done
     mv "$AGENDA"NEW "$AGENDA"
+    echo "END:VCALENDAR" >> "$ICAL"
 
 }
