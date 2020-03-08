@@ -99,7 +99,8 @@ function schedule_item {
     then
         echo -e "\n$LINE" >> "$FILE"
     fi
-    LINE="$(echo "$LINE" | sed 's/^\s*.*\[/\\\[/g' | sed 's/^\s*.*\]/\\\]/g' | sed 's/^\s*.*\*/\\\*/g')"
+    # LINE="$(echo "$LINE" | sed 's/^\s*.*\[/\\\[/g' | sed 's/^\s*.*\]/\\\]/g' | sed 's/^\s*.*\*/\\\*/g')"
+    LINE="$(echo "$LINE" | sed 's/\[/\\\[/g;s/\]/\\\]/g;s/\*/\\\*/g')"
     NEWLINE="$LINE$empty\[$TAG\]\: $SCHEDULE"
     sed -i "$FILE" -e "0,/$LINE/ s/$LINE/$NEWLINE/"
 }
@@ -118,12 +119,12 @@ function toggle_todo_item {
     if [ ! -z "$ISOFF" ]
     then
         # Too many escaped characters!!
-        NEWLINE="$(echo "$LINE" | sed 's/^\s*.*\[ \]/\\\[x\\\]/g')"
-        LINE="$(echo "$LINE" | sed 's/^\s*.*\[ \]/\\\[ \\\]/g')"
+        NEWLINE="$(echo "$LINE" | sed 's/\*/\\\*/g;s/^\s*.*\[ \]/\[x\]/g')"
+        LINE="$(echo "$LINE" | sed 's/\*/\\\*/g;s/^\s*.*\[ \]/\\\[ \\\]/g')"
         sed -i "$FILE" -e "s/$LINE$/$NEWLINE/"
     else
-        NEWLINE="$(echo "$LINE" | sed 's/^\s*.*\[x\]/\\\[ \\\]/g')"
-        LINE="$(echo "$LINE" | sed 's/^\s*.*\[x\]/\\\[x\\\]/g')"
+        NEWLINE="$(echo "$LINE" | sed 's/\*/\\\*/g;s/^\s*.*\[x\]/\\\[ \\\]/g')"
+        LINE="$(echo "$LINE" | sed 's/\*/\\\*/g;s/^\s*.*\[x\]/\\\[x\\\]/g')"
         sed -i "$FILE" -e "s/$LINE$/$NEWLINE/"
     fi
 }

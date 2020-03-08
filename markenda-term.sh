@@ -62,6 +62,8 @@ function menu_todos {
     "Open All TODOS HTML")
         cat $(find "$WF/TODOS" | grep '.md' | sort) | pandoc --toc --self-contained --from=gfm --to=html --css=pandoc.css -o "$WF/todos.html"
         $BROWSER"$WF/todos.html" && 
+        # cat $(find "$WF/TODOS" | grep '.md' | sort) > "$WF/todos.md"
+        # $BROWSER"$WF/todos.md" && 
         OPT="View TODOS"
        ;;
     *)  
@@ -95,6 +97,7 @@ function menu_todos {
         "Open HTML")
             pandoc -i "$WF/TODOS/$SEL" --toc --self-contained --from=gfm --css=pandoc.css -o "$WF/TODOS/${SEL:0:-3}.html"
             $BROWSER"$WF/TODOS/${SEL:0:-3}.html" && 
+            # $BROWSER"$WF/TODOS/${SEL}" && 
             OPT="View TODOS"
            ;;
         "Edit file")
@@ -138,6 +141,8 @@ function menu_notes {
     "Open All Notes HTML")
         cat $(find $WF/NOTES | grep '.md' | sort) | pandoc --toc --self-contained --from=gfm --css=pandoc.css -o "$WF/notes.html"
         $BROWSER"$WF/notes.html" && 
+        # cat $(find "$WF/NOTES" | grep '.md' | sort) > "$WF/notes.md"
+        # $BROWSER"$WF/notes.md" && 
         OPT="View Notes"
 
         ;;
@@ -168,6 +173,7 @@ function menu_notes {
         "Open HTML")
             pandoc -i "$WF/NOTES/$SEL" --toc --self-contained --from=gfm --css=pandoc.css -o "$WF/NOTES/${SEL:0:-3}.html"
             $BROWSER"$WF/NOTES/${SEL:0:-3}.html" && 
+            # $BROWSER"$WF/NOTES/${SEL}" && 
             OPT="View Notes"
 
             ;;
