@@ -20,11 +20,11 @@ BROWSER="lynx "
 
 
 function confirm {
-    echo -e "No\nYes" | $dmenu_nop -p "Are you sure?> "
+    echo -e "No\nYes" | sed 's+\t+  +g' | $dmenu_nop -p "Are you sure?> "
 }
 
 function select_week_rofi {
-    week="$(gcal --blocks=12 -K | sed '/^\s*$/d' | $dmenu_nop -p 'Select week> ' | awk '{ if($NF < 54) print $NF}')"
+    week="$(gcal --blocks=12 -K | sed '/^\s*$/d' | sed 's+\t+  +g' | $dmenu_nop -p 'Select week> ' | awk '{ if($NF < 54) print $NF}')"
     if [ ! -z "$week" ]
     then 
         echo "Week $week:"
@@ -36,8 +36,8 @@ function select_week_rofi {
 
 function start {
     generate_agendafile &
-    MENU=$'View TODOS\nView Notes\nCalendar\nAgenda: Show Upcoming\nAgenda: Current Week\nAgenda: Select Week\nAgenda: Current Month\nAgenda: Current Year\nEXIT'
-    OPT="$(echo -e "$MENU" | $dmenu_normal)"    
+    MENU="View TODOS\nView Notes\nCalendar\nAgenda: Show Upcoming\nAgenda: Current Week\nAgenda: Select Week\nAgenda: Current Month\nAgenda: Current Year\nEXIT"
+    OPT="$(echo -e "$MENU" | sed 's+\t+  +g' | $dmenu_normal)"    
     INFILE=false
 }
 
@@ -48,14 +48,14 @@ function menu_todos {
     
     if [ -z "$1" ] && [ "$INFILE" == false ]
     then
-        SEL="$(echo -e "BACK\nCreate TODO\nOpen All TODOS HTML\n-----\n$NAMES" | $dmenu_normal)"
+        SEL="$(echo -e "BACK\nCreate TODO\nOpen All TODOS HTML\n-----\n$NAMES" | sed 's+\t+  +g' | $dmenu_normal)"
     fi
     case "$SEL" in
     "BACK")
         OPT="start"
         ;;
     "Create TODO")
-        name="$(echo "" | $dmenu_nop -p "TODO name> ")"
+        name="$(echo "" | sed 's+\t+  +g' | $dmenu_nop -p "TODO name> ")"
         new_todo_file "$name"
         OPT="View TODOS"
         ;;
@@ -67,9 +67,9 @@ function menu_todos {
         OPT="View TODOS"
        ;;
     *)  
-        MENU=$'BACK\nOpen HTML\nAdd TODO item\nAdd Schedule\nEdit file\nDelete file\n-----\n'
+        MENU="BACK\nOpen HTML\nAdd TODO item\nAdd Schedule\nEdit file\nDelete file\n-----\n"
         TODO="$(cat "$WF/TODOS/$SEL")"
-        LINE="$(echo "$MENU$TODO" | $dmenu_normal)"
+        LINE="$(echo -e "$MENU$TODO" | sed 's+\t+  +g' | $dmenu_normal)"
         INFILE=true
         case "$LINE" in
         "BACK")
@@ -77,19 +77,19 @@ function menu_todos {
             INFILE=false
            ;;
         "Add TODO item")
-            MSG="$(echo "" | $dmenu_nop -p "Item contents> ")"
+            MSG="$(echo "" | sed 's+\t+  +g' | $dmenu_nop -p "Item contents> ")"
             new_todo_item "$WF/TODOS/$SEL" "$MSG"
             OPT="View TODOS" #"$SEL"
             ;;
         "Add Schedule")
-            MSG="$(echo "$TODO" | $dmenu_nop -p "Select Line> ")"
+            MSG="$(echo "$TODO" | sed 's+\t+  +g' | $dmenu_nop -p "Select Line> ")"
             if [ -z "$MSG" ]
             then
                 OPT="View TODOS"
                break
             else
-                TAG="$(echo -e "TODO\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG> ")"
-                SCHEDULE="$(echo "" | $dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
+                TAG="$(echo -e "TODO\nEVENT\nDEADLINE\n" | sed 's+\t+  +g' | $dmenu_nop -p "Select or write TAG> ")"
+                SCHEDULE="$(echo "" | sed 's+\t+  +g' | $dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
                 schedule_item "$WF/TODOS/$SEL" "$MSG" "$SCHEDULE" "$TAG"
                 OPT="View TODOS" #"$SEL"
             fi
@@ -127,14 +127,14 @@ function menu_notes {
     empty=$'\n'
     if [ -z "$1" ] && [ "$INFILE" == false ]
     then
-        SEL="$(echo -e "BACK\nCreate Note\nOpen All Notes HTML\n-----\n$NAMES" | $dmenu_normal)"
+        SEL="$(echo -e "BACK\nCreate Note\nOpen All Notes HTML\n-----\n$NAMES" | sed 's+\t+  +g' | $dmenu_normal)"
     fi
     case "$SEL" in
     "BACK")
         OPT="start"
         ;;
     "Create Note")
-        name="$(echo "" | $dmenu_nop -p "Note name> ")"
+        name="$(echo "" | sed 's+\t+  +g' | $dmenu_nop -p "Note name> ")"
         new_note "$name"
         OPT="View Notes"
         ;;
@@ -147,9 +147,9 @@ function menu_notes {
 
         ;;
     *)  
-        MENU=$'BACK\nAdd Schedule\nOpen HTML\nEdit file\nDelete file\n-----\n'
+        MENU="BACK\nAdd Schedule\nOpen HTML\nEdit file\nDelete file\n-----\n"
         NOTE="$(cat "$WF/NOTES/$SEL")"
-        LINE="$(echo "$MENU$NOTE" | $dmenu_normal)"
+        LINE="$(echo -e "$MENU$NOTE" | sed 's+\t+  +g' | $dmenu_normal)"
         INFILE=true
         case "$LINE" in
         "BACK")
@@ -157,15 +157,15 @@ function menu_notes {
             INFILE=false
             ;;
         "Add Schedule")
-            MSG="$(echo "$NOTE" | $dmenu_nop -p "Select Line> ")"
+            MSG="$(echo "$NOTE" | sed 's+\t+  +g' | $dmenu_nop -p "Select Line> ")"
             if [ -z "$MSG" ]
             then
                 OPT="View Notes"
 
                 break
             else
-                TAG="$(echo -e "NOTE\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG> ")"
-                SCHEDULE="$(echo "" | $dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
+                TAG="$(echo -e "NOTE\nEVENT\nDEADLINE\n" | sed 's+\t+  +g' | $dmenu_nop -p "Select or write TAG> ")"
+                SCHEDULE="$(echo "" | sed 's+\t+  +g' | $dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
                 schedule_item "$WF/NOTES/$SEL" "$MSG" "$SCHEDULE" "$TAG"
                 OPT="View Notes" #"$SEL"
             fi
@@ -201,7 +201,7 @@ function menu_notes {
 
 
 start
-empty=$'\n'
+empty="\n"
 if [ ! -z "$OPT" ]
 then
     while true
@@ -234,7 +234,7 @@ then
             OPT="$(select_week_rofi)" 
             if [ "$WEEK" == "Wrong selection" ]
             then
-                TMP=$(echo "BACK" | $dmenu_nop -p "WRONG SELECTION")
+                TMP=$(echo "BACK" | sed 's+\t+  +g' | $dmenu_nop -p "WRONG SELECTION")
             fi
             ;;
         "Agenda: Current Month")
@@ -244,7 +244,7 @@ then
             OPT="$(current_year)"
             ;;
         *)
-            LINE="$(echo "BACK$empty$OPT" | $dmenu_normal)"
+            LINE="$(echo -e "BACK$empty$OPT" | sed 's+\t+  +g' | $dmenu_normal)"
             if [ ! -z "$LINE" ] && [ ! "$LINE" == "BACK" ]
             then
                 DATE="$(echo "$LINE" | cut -d: -f 1 | cut -d, -f 2)"
