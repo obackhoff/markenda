@@ -11,10 +11,10 @@ fi
 
 source $DIR/markenda-core.sh "$WF"
 
-# dmenu_normal="$DIR/pmenu -p Markenda>"
-# dmenu_nop="$DIR/pmenu"
-dmenu_normal="vis-menu -i -l $(tput lines) -p Markenda>"
-dmenu_nop="vis-menu -i -l $(tput lines)"
+dmenu_normal="$DIR/pmenu -p Markenda>"
+dmenu_nop="$DIR/pmenu"
+dmenu_normal="vis-menu -i -l $(expr $(tput lines) - 1) -p Markenda>"
+dmenu_nop="vis-menu -i -l $(expr $(tput lines) - 1)"
 EDITOR="nvim "
 BROWSER="lynx "
 
@@ -34,7 +34,7 @@ function select_week_rofi {
 }
 
 function start {
-    clear
+    ###clear
     generate_agendafile &
     MENU=$'View TODOS\nView Notes\nCalendar\nAgenda: Show Upcoming\nAgenda: Current Week\nAgenda: Select Week\nAgenda: Current Month\nAgenda: Current Year\nEXIT'
     OPT="$(echo -e "$MENU" | $dmenu_normal)"    
@@ -42,7 +42,7 @@ function start {
 }
 
 function menu_todos {
-    clear
+    #clear
     TODOS="$(find $WF/TODOS | grep '.md')"
     NAMES="$(echo "$TODOS" | sed "s|$WF/TODOS/||")"
     empty=$'\n'
@@ -56,7 +56,7 @@ function menu_todos {
         OPT="start"
         ;;
     "Create TODO")
-        name="$($dmenu_nop -p "TODO name> ")"
+        name="$(echo "" | $dmenu_nop -p "TODO name> ")"
         new_todo_file "$name"
         OPT="View TODOS"
         ;;
@@ -75,7 +75,7 @@ function menu_todos {
             INFILE=false
            ;;
         "Add TODO item")
-            MSG="$($dmenu_nop -p "Item contents> ")"
+            MSG="$(echo "" | $dmenu_nop -p "Item contents> ")"
             new_todo_item "$WF/TODOS/$SEL" "$MSG"
             OPT="View TODOS" #"$SEL"
             ;;
@@ -87,7 +87,7 @@ function menu_todos {
                break
             else
                 TAG="$(echo -e "TODO\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG> ")"
-                SCHEDULE="$($dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
+                SCHEDULE="$(echo "" | $dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
                 schedule_item "$WF/TODOS/$SEL" "$MSG" "$SCHEDULE" "$TAG"
                 OPT="View TODOS" #"$SEL"
             fi
@@ -120,7 +120,7 @@ function menu_todos {
 }
 
 function menu_notes {
-    clear
+    #clear
     NOTES="$(find $WF/NOTES | grep '.md')"
     NAMES="$(echo "$NOTES" | sed "s|$WF/NOTES/||")"
     empty=$'\n'
@@ -133,7 +133,7 @@ function menu_notes {
         OPT="start"
         ;;
     "Create Note")
-        name="$($dmenu_nop -p "Note name> ")"
+        name="$(echo "" | $dmenu_nop -p "Note name> ")"
         new_note "$name"
         OPT="View Notes"
         ;;
@@ -161,7 +161,7 @@ function menu_notes {
                 break
             else
                 TAG="$(echo -e "NOTE\nEVENT\nDEADLINE\n" | $dmenu_nop -p "Select or write TAG> ")"
-                SCHEDULE="$($dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
+                SCHEDULE="$(echo "" | $dmenu_nop -p "Type Date (yyyy-mm-dd[-hh:mm])> ")"
                 schedule_item "$WF/NOTES/$SEL" "$MSG" "$SCHEDULE" "$TAG"
                 OPT="View Notes" #"$SEL"
             fi
