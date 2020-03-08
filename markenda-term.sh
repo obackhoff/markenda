@@ -69,6 +69,7 @@ function menu_todos {
         MENU=$'BACK\nOpen HTML\nAdd TODO item\nAdd Schedule\nEdit file\nDelete file\n-----\n'
         TODO="$(cat "$WF/TODOS/$SEL")"
         LINE="$(echo "$MENU$TODO" | $dmenu_normal)"
+        INFILE=true
         case "$LINE" in
         "BACK")
             OPT="View TODOS"
@@ -112,7 +113,6 @@ function menu_todos {
         *)
             toggle_todo_item "$WF/TODOS/$SEL" "$LINE"
             OPT="View TODOS" #"$SEL"
-            INFILE=true
             ;;
         esac
         ;;
@@ -147,6 +147,7 @@ function menu_notes {
         MENU=$'BACK\nAdd Schedule\nOpen HTML\nEdit file\nDelete file\n-----\n'
         NOTE="$(cat "$WF/NOTES/$SEL")"
         LINE="$(echo "$MENU$NOTE" | $dmenu_normal)"
+        INFILE=true
         case "$LINE" in
         "BACK")
             OPT="View Notes"
@@ -188,7 +189,6 @@ function menu_notes {
         *)
             toggle_todo_item "$WF/NOTES/$SEL" "$LINE"
             OPT="View Notes" #"$SEL"
-            INFILE=true
             ;;
         esac
         ;;
