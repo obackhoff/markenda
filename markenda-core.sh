@@ -99,9 +99,11 @@ function schedule_item {
     then
         echo -e "\n$LINE" >> "$FILE"
     fi
-    LINE="$(echo "$LINE" | sed 's/^\s*.*\[/\\\[/g' | sed 's/^\s*.*\]/\\\]/g')"
+    LINE="$(echo "$LINE" | sed 's/^\s*.*\[/\\\[/g' | sed 's/^\s*.*\]/\\\]/g' | sed 's/^\s*.*\*/\\\*/g')"
     NEWLINE="$LINE$empty\[$TAG\]\: $SCHEDULE"
-    sed -i "$FILE" -e "0,/$LINE/ s/$LINE/$NEWLINE/"
+    echo "$LINE" > l.txt
+    echo "$NEWLINE" >> l.txt
+    sed "$FILE" -e "0,/$LINE/ s/$LINE/$NEWLINE/" >> l.txt
 }
 
 function new_todo_item {
