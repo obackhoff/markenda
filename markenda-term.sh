@@ -11,12 +11,13 @@ fi
 
 source $DIR/markenda-core.sh "$WF"
 
-dmenu_normal="$DIR/pmenu -p Markenda>"
-dmenu_nop="$DIR/pmenu"
+# dmenu_normal="$DIR/pmenu -p Markenda>"
+# dmenu_nop="$DIR/pmenu"
 dmenu_normal="vis-menu -i -l $(expr $(tput lines) - 1) -p Markenda>"
 dmenu_nop="vis-menu -i -l $(expr $(tput lines) - 1)"
 EDITOR="nvim "
 BROWSER="lynx "
+
 
 function confirm {
     echo -e "No\nYes" | $dmenu_nop -p "Are you sure?> "
@@ -34,7 +35,6 @@ function select_week_rofi {
 }
 
 function start {
-    ###clear
     generate_agendafile &
     MENU=$'View TODOS\nView Notes\nCalendar\nAgenda: Show Upcoming\nAgenda: Current Week\nAgenda: Select Week\nAgenda: Current Month\nAgenda: Current Year\nEXIT'
     OPT="$(echo -e "$MENU" | $dmenu_normal)"    
@@ -42,7 +42,6 @@ function start {
 }
 
 function menu_todos {
-    #clear
     TODOS="$(find $WF/TODOS | grep '.md')"
     NAMES="$(echo "$TODOS" | sed "s|$WF/TODOS/||")"
     empty=$'\n'
@@ -120,7 +119,6 @@ function menu_todos {
 }
 
 function menu_notes {
-    #clear
     NOTES="$(find $WF/NOTES | grep '.md')"
     NAMES="$(echo "$NOTES" | sed "s|$WF/NOTES/||")"
     empty=$'\n'

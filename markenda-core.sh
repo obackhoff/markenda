@@ -101,8 +101,6 @@ function schedule_item {
     fi
     LINE="$(echo "$LINE" | sed 's/^\s*.*\[/\\\[/g' | sed 's/^\s*.*\]/\\\]/g' | sed 's/^\s*.*\*/\\\*/g')"
     NEWLINE="$LINE$empty\[$TAG\]\: $SCHEDULE"
-    echo "$LINE"
-    echo "$NEWLINE"
     sed -i "$FILE" -e "0,/$LINE/ s/$LINE/$NEWLINE/"
 }
 
