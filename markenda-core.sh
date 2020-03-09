@@ -160,7 +160,6 @@ function generate_agendafile {
             SCHEDULE="$(echo "$line" | grep "\[.*\]:" | cut -d' ' -f 2 | sed 's/-//g')"
             DATE="${SCHEDULE:0:8}"
             TIME="${SCHEDULE:8}"
-            echo "$line" >> $HOME/l.log
             if [ ! -z $TIME ] ; 
             then 
                 TIME=" $TIME"
